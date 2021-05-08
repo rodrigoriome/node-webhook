@@ -4,9 +4,9 @@
   "description": "Webhook forwarding made simple",
   "main": "./dist/index.js",
   "types": "dist/types/index.d.ts",
-  "files": [
-    "dist/**"
-  ],
+  "bin": {
+    "node-webhook": "./bin/node-webhook"
+  },
   "directories": {
     "src": "src"
   },
