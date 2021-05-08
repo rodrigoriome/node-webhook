@@ -1,0 +1,40 @@
+{
+  "name": "node-webhook",
+  "version": "1.0.0",
+  "description": "Webhook forwarding made simple",
+  "main": "./dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist/**"
+  ],
+  "directories": {
+    "src": "src"
+  },
+  "scripts": {
+    "build": "rimraf dist && rollup -c",
+    "watch": "rimraf dist && rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodrigoriome/node-webhook.git"
+  },
+  "keywords": [
+    "node",
+    "webhook",
+    "request"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodrigoriome/node-webhook/issues"
+  },
+  "homepage": "https://github.com/rodrigoriome/node-webhook#readme",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@types/node": "^15.0.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.47.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "typescript": "^4.2.4"
+  }
+}
