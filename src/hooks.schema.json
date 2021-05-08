@@ -1,82 +1,108 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "NodeWebhook",
-    "properties": {
-        "hooks": {
-            "type": "object",
-            "description": "The hooks configuration",
-            "additionalProperties": false,
-            "patternProperties": {
-                "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$": {
-                    "type": "object",
-                    "properties": {
-                        "name": {
-                            "type": "string"
-                        },
-                        "forward": {
-                            "type": "object",
-                            "properties": {
-                                "headers": {
-                                    "type": "array",
-                                    "uniqueItems": true,
-                                    "items": {
-                                        "anyOf": [
-                                            {
-                                                "type": "string"
-                                            },
-                                            {
-                                                "enum": [
-                                                    "content-type",
-                                                    "content-length"
-                                                ]
-                                            }
-                                        ]
-                                    },
-                                    "additionalItems": true
-                                }
-                            }
-                        },
-                        "execute": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "anyOf": [
-                                    {
-                                        "properties": {
-                                            "type": {
-                                                "enum": [
-                                                    "request"
-                                                ]
-                                            },
-                                            "endpoint": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    },
-                                    {
-                                        "properties": {
-                                            "type": {
-                                                "enum": [
-                                                    "script"
-                                                ]
-                                            },
-                                            "location": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                ]
-                            }
-                        }
-                    },
-                    "required": [
-                        "execute"
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "NodeWebhook",
+  "definitions": {
+    "HttpMethodsEnum": {
+      "enum": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE",
+        "PATCH",
+        "OPTIONS",
+        "HEAD"
+      ]
+    }
+  },
+  "properties": {
+    "hooks": {
+      "type": "array",
+      "description": "The hooks configuration",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "slug": {
+              "type": "string"
+            },
+            "forward": {
+              "type": "object",
+              "properties": {
+                "headers": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "items": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "enum": [
+                          "content-type",
+                          "content-length"
+                        ]
+                      }
                     ]
+                  },
+                  "additionalItems": true
                 }
+              }
+            },
+            "allowedMethods": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "$ref": "#/definitions/HttpMethodsEnum"
+              }
+            },
+            "callbacks": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "anyOf": [
+                  {
+                    "properties": {
+                      "type": {
+                        "enum": [
+                          "request"
+                        ]
+                      },
+                      "endpoint": {
+                        "type": "string"
+                      },
+                      "method": {
+                        "$ref": "#/definitions/HttpMethodsEnum"
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "type": {
+                        "enum": [
+                          "script"
+                        ]
+                      },
+                      "location": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              }
             }
+          },
+          "required": [
+            "slug",
+            "callbacks"
+          ]
         }
-    },
-    "required": [
-        "hooks"
-    ]
+      ]
+    }
+  },
+  "required": [
+    "hooks"
+  ]
 }

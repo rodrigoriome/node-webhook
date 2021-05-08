@@ -1,6 +1,5 @@
 import typescript from 'rollup-plugin-typescript2';
 import { terser } from 'rollup-plugin-terser';
-import nodeResolve from '@rollup/plugin-node-resolve';
 
 /** @returns {import('rollup').RollupOptions} */
 const mapRollupEntries = entryFile => {
@@ -9,14 +8,14 @@ const mapRollupEntries = entryFile => {
         output: {
             name: entryFile,
             dir: 'dist',
-            format: 'commonjs'
+            format: 'cjs'
         },
         plugins: [
             typescript({
+                abortOnError: false,
                 useTsconfigDeclarationDir: true
             }),
             terser(),
-            nodeResolve(),
         ]
     }
 }

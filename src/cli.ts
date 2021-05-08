@@ -1,5 +1,5 @@
 import path from 'path'
-import App from './app'
+import App from './App'
 
 if (process.argv.length < 3) {
     console.log('Missing configuration file.')
@@ -20,4 +20,6 @@ try {
 
 const app = new App(appConfig)
 
-app.server.listen(3000)
+app.express.listen(3000, () => {
+    console.log('Listening at port 3000')
+})
