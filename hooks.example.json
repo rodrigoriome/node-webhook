@@ -1,0 +1,24 @@
+{
+    "$schema": "https://git.io/J39Pp",
+    "hooks": {
+        "83c10e24-afb0-460b-a89d-5ea23804edb5": {
+            "name": "An example forward",
+            "forward": {
+                "headers": [
+                    "content-type",
+                    "content-length"
+                ]
+            },
+            "execute": [
+                {
+                    "type": "request",
+                    "endpoint": "https://www.google.com"
+                },
+                {
+                    "type": "request",
+                    "endpoint": "https://www.github.com"
+                }
+            ]
+        }
+    }
+}
