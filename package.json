@@ -1,5 +1,5 @@
 {
-  "name": "node-webhook",
+  "name": "@rodrigoriome/node-webhook",
   "version": "1.0.0",
   "description": "Webhook forwarding made simple",
   "main": "./dist/index.js",
