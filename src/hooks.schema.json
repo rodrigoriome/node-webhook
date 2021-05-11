@@ -15,6 +15,9 @@
     }
   },
   "properties": {
+    "port": {
+      "type": "number"
+    },
     "hooks": {
       "type": "array",
       "description": "The hooks configuration",

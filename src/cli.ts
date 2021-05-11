@@ -20,6 +20,8 @@ try {
 
 const app = new App(appConfig)
 
-app.express.listen(3000, () => {
-    console.log('Listening at port 3000')
+const port = appConfig.port || 3333
+
+app.express.listen(port, () => {
+    console.log(`Listening at port ${port}`)
 })
