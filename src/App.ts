@@ -49,7 +49,8 @@ class App {
                 const headers: { [key: string]: string } = {}
 
                 for (const headerName of (hook.forward?.headers || [])) {
-                    const headerValue = request.headers[headerName] as string | undefined
+                    const lowerHeaderName = headerName.toLowerCase()
+                    const headerValue = request.headers[lowerHeaderName] as string | undefined
 
                     if (headerValue) {
                         headers[headerName] = headerValue
