@@ -33,7 +33,7 @@ export const hook = {
         return {
             name: hook.name,
             slug: hook.slug,
-            allowedMethods: hook.allowedMethods || [],
+            allowedMethods: hook.allowedMethods || ['POST'],
             forward: {
                 headers: hook.forward?.headers || ['content-type', 'content-length'],
             },

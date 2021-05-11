@@ -1,5 +1,4 @@
-import http from 'http'
-import https from 'https'
+import fetch from 'node-fetch'
 import express from 'express'
 import finalhandler from 'finalhandler'
 import { hook, HookConfig, HttpMethod } from './app/hook'
@@ -40,12 +39,12 @@ class App {
 
     private routes() {
         const makeHandlerRoute = (hook: HookConfig) => {
-            this.express.all('/' + hook.slug, (request, response) => {
+            this.express.all('/' + hook.slug, async (request, response) => {
                 if (!hook.allowedMethods.includes(request.method as HttpMethod)) {
                     return finalhandler(request, response)(null)
                 }
 
-                response.send('It works!')
+                response.send({ received: true })
 
                 const headers: { [key: string]: string } = {}
 
@@ -59,35 +58,18 @@ class App {
 
                 for (const task of hook.callbacks) {
                     if (task.type === 'request') {
-                        const handler = task.endpoint.startsWith('https') ? https : http
-
-                        try {
-                            const hookRequest = handler.request(task.endpoint, hookResponse => {
-                                hookResponse.setEncoding('utf-8')
-
-                                hookResponse.on('data', data => {
-                                    console.log(data)
-                                })
-
-                                hookResponse.on('error', err => {
-                                    console.error(err)
-                                })
+                        await fetch(task.endpoint, {
+                            headers,
+                            method: 'POST',
+                            body: request.body
+                        })
+                            .then(async fetchResponse => await fetchResponse.json())
+                            .then(hookResponse =>  {
+                                console.log(hookResponse)
                             })
-
-                            hookRequest.method = 'POST'
-
-                            Object.entries(headers).map(([headerName, headerValue]) => {
-                                hookRequest.setHeader(headerName, headerValue)
+                            .catch(err => {
+                                console.error(`${err.code}: ${err.message}`)
                             })
-
-                            if (request.body) {
-                                hookRequest.write(request.body)
-                            }
-
-                            hookRequest.end()
-                        } catch (err) {
-                            console.error(`Error while trying to connect to ${task.endpoint}`, err)
-                        }
                     }
                 }
             })
