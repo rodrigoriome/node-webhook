@@ -12,7 +12,9 @@
   },
   "scripts": {
     "build": "rimraf dist && rollup -c",
-    "watch": "rimraf dist && rollup -c -w"
+    "watch": "rimraf dist && rollup -c -w",
+    "deploy": "np --no-tests",
+    "predeploy": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -37,6 +39,7 @@
     "@types/finalhandler": "^1.1.0",
     "@types/node": "^15.0.2",
     "@types/node-fetch": "^2.5.10",
+    "np": "^7.5.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.47.0",
     "rollup-plugin-terser": "^7.0.2",
