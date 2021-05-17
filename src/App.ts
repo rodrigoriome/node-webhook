@@ -61,7 +61,7 @@ class App {
                     if (task.type === 'request') {
                         await fetch(task.endpoint, {
                             headers,
-                            method: 'POST',
+                            method: task.method || 'POST',
                             body: request.body
                         })
                             .then(async fetchResponse => await fetchResponse.json())

@@ -3,6 +3,7 @@ export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS'
 export interface RequestCallback {
     type: 'request'
     endpoint: string
+    method: HttpMethod
 }
 
 export interface ScriptCallback {
