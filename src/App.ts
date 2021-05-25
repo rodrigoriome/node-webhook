@@ -1,7 +1,20 @@
 import fetch from 'node-fetch'
 import express from 'express'
 import finalhandler from 'finalhandler'
+import { Options } from 'body-parser'
 import { hook, HookConfig, HttpMethod } from './app/hook'
+
+declare module 'http' {
+    interface IncomingMessage {
+        rawBody: string
+    }
+}
+
+declare module 'express-serve-static-core' {
+    interface Request {
+        rawBody: string
+    }
+}
 
 export interface AppOptions {
     hooks: HookConfig[]
@@ -22,19 +35,14 @@ class App {
     }
 
     private middlewares() {
-        this.express.use((request, response, next) => {
-            let data: any
+        const verify: Options['verify'] = (request, response, buffer, encoding) => {
+            if (buffer && buffer.length) {
+                request.rawBody = buffer.toString(encoding as BufferEncoding || 'utf-8')
+            }
+        }
 
-            request.setEncoding('utf-8')
-            request.on('data', chunk => {
-                data = chunk
-            })
-
-            request.on('end', () => {
-                request.body = data
-                next()
-            })
-        })
+        this.express.use(express.urlencoded({ extended: true, verify }))
+        this.express.use(express.json({ verify }))
     }
 
     private routes() {
@@ -62,7 +70,7 @@ class App {
                         await fetch(task.endpoint, {
                             headers,
                             method: task.method || 'POST',
-                            body: request.body
+                            body: request.rawBody
                         })
                             .then(async fetchResponse => await fetchResponse.json())
                             .then(hookResponse =>  {
