@@ -1,6 +1,6 @@
 {
   "name": "@rodrigoriome/node-webhook",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Webhook forwarding made simple",
   "main": "./dist/index.js",
   "types": "dist/types/index.d.ts",
